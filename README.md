@@ -1,2 +1,2 @@
 # Projects
-Case Studies and Other projects seperated between academic and personal interest.
+Case Studies and other projects seperated between academic and personal interest.
