@@ -14,4 +14,11 @@ Initially I tried to automate gathering the data using webscraping methods but f
 I've uploaded the corrected format as a CSV accessible here:		[Personal Data](https://github.com/RJ-Jung/Projects/blob/ce83ca8e9c24a4dbfc88c894bc1e24c3d582709e/Personal/Stock%20Trading%20Competition%20October%202023/Resources/Data/OCTTradesPersonal.csv)		[Winner's Data](https://github.com/RJ-Jung/Projects/blob/main/Personal/Stock%20Trading%20Competition%20October%202023/Resources/Data/OctTradeFirstPlace.csv)
 
 ***
-
+Im going to be using Microsoft SQL Server to analyze both data sets
+before we start analysis I noticed the first place contestant had open trades on the final day of October which wasnt counted in the final result so we need to remove these trades from the dataset. 
+Using the statement
+```
+DELETE FROM dbo.OctTradeFirstPlace    
+WHERE close_time >= '2023-10-31 23:59:59';
+```
+10 Trades were removed as they were not counted in the competition and closed automatically after time time period ended.
