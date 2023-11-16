@@ -22,3 +22,12 @@ DELETE FROM dbo.OctTradeFirstPlace
 WHERE close_time >= '2023-10-31 23:59:59';
 ```
 10 Trades were removed as they were not counted in the competition and closed automatically after time time period ended.
+
+I also realized the data set I downloaded nor the introduction went into detail about the rules and conditions of the competition, So to sum it up
+  - The starting balance of the account is $100,000
+  - You have a maximum static loss allowence of 10% of the starting value or equity value of $90,000
+  - You also have a dynamic loss allowence of 5% or $5000 per day, the equity value or balance of the account at the end of the day will be the new floor for this rule (whichever is higher)
+  - 5 Lot Max for Forex Pairs, 3 Lot Max for Indices, 3 lot for Crypto and Commodities.
+  - No automated trading is allowed
+
+Knowing this we should create a column for the account value per trade which wasn't included in the data we took.
