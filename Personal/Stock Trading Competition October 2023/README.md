@@ -31,3 +31,4 @@ I also realized the data set I downloaded nor the introduction went into detail 
   - No automated trading is allowed
 
 Knowing this we should create a column for the account value per trade which wasn't included in the data we took.
+
