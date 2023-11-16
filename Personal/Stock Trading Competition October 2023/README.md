@@ -10,4 +10,8 @@ Now most trading platforms allow you to export trade history as an CSV or PDF fo
 Initially I tried to automate gathering the data using webscraping methods but found some conflictions with the website formatting and split pages for the data table, I opted to copy paste the data from the table on the dashboard manually page by page into [text files](Personal/Stock Trading Competition October 2023/Resources/Data) as it was more convenient and faster than configuring a compatible web scraper for the site. Now I can upload these files into Excel for simple formatting adjustments as it currently looks like this!
 
 <img src="https://github.com/RJ-Jung/Projects/blob/71db18d3d7a93f3ff6fa1c2e1bae43b4c937f495/Personal/Stock%20Trading%20Competition%20October%202023/Resources/Images/InitialExcelUpload.JPG?raw=true" width=80% height=80%>
-I've uploaded the corrected format as a CSV accessible here: [Personal Data](Personal/Stock Trading Competition October 2023/Resources/Data/OCTTradesPersonal.csv) , [Winner Data](https://github.com/RJ-Jung/Projects/blob/1fa3d157cbc3676ee6a37ef7880ba37a49a2eaa6/Personal/Stock%20Trading%20Competition%20October%202023/Resources/Data/OctTradeFirstPlace.csv)
+
+I've uploaded the corrected format as a CSV accessible here:		[Personal Data](https://github.com/RJ-Jung/Projects/blob/ce83ca8e9c24a4dbfc88c894bc1e24c3d582709e/Personal/Stock%20Trading%20Competition%20October%202023/Resources/Data/OCTTradesPersonal.csv)		[Winner's Data](https://github.com/RJ-Jung/Projects/blob/main/Personal/Stock%20Trading%20Competition%20October%202023/Resources/Data/OctTradeFirstPlace.csv)
+
+***
+
