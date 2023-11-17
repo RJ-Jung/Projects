@@ -30,5 +30,161 @@ I also realized the data set I downloaded nor the introduction went into detail 
   - 5 Lot Max for Forex Pairs, 3 Lot Max for Indices, 3 lot for Crypto and Commodities.
   - No automated trading is allowed
 
-Knowing this we should create a column for the account value per trade which wasn't included in the data we took.
+Knowing this we should create a column for the account value per trade which wasn't included in the data we took. As for the strategies used we will assume unknown or proprietary for both.
 
+I tried to do this in SQL with a statement like this using common table expression after creating a row_number column ordered by opening trade times
+```
+WITH cte AS (
+    SELECT
+        ROW_NUMBER() OVER (ORDER BY Open_Time) AS row_num,
+        Open_Time,
+        profit,
+        CASE WHEN row_num = 1 THEN 100000
+             ELSE COALESCE(LAG(account_value) OVER (ORDER BY Open_Time), 0) END AS account_value
+    FROM dbo.OctTradeFirstPlace
+)
+
+UPDATE dbo.OctTradeFirstPlace
+SET account_value = cte.account_value
+FROM dbo.OctTradeFirstPlace
+JOIN cte ON dbo.OctTradeFirstPlace.Open_Time = cte.Open_Time;
+
+SELECT *
+FROM dbo.OctTradeFirstPlace;
+```
+but I had trouble getting this or any other method in SQL to work properly, if anyone has some advice or a method please let me know!
+Instead I went pack to Excel to create the new column with simple functions. with the first row as `=100000 + H2` H2 being the fist cell with a profit value. and subsequest cells in the account value column J simply having `=J2 + H3` , `=J3 + H4` , `=J4 + H5` and so on. Using the prevous account value while adding the current profit value and filling the rest of the column with Excels automatic recognition of the formula structure.
+<img src="https://github.com/RJ-Jung/Projects/blob/b873daa28204bbfe58d46cae0b93b1932b7cd28c/Personal/Stock%20Trading%20Competition%20October%202023/Resources/Images/excelaccvalue.JPG" width=50% height=50%>
+
+I've uploaded the corrected format as a CSV accessible here:		[Personal Data](https://github.com/RJ-Jung/Projects/blob/c46fec5aa7536c883c68e38e6754669692bb1f42/Personal/Stock%20Trading%20Competition%20October%202023/Resources/Data/OCTTradesPersonalACCVAL.csv)		[Winner's Data](https://github.com/RJ-Jung/Projects/blob/main/Personal/Stock%20Trading%20Competition%20October%202023/Resources/Data/OctTradeFirstPlaceACCVAL.csv)
+
+We can now start analysis
+<details>
+  <summary>Click me</summary>
+
+```-- Queries for dbo.OctTradeFirstPlaceACCVAL
+
+SELECT COUNT(*) AS Row_Count
+FROM dbo.OctTradeFirstPlaceACCVAL;
+
+SELECT MAX(ACC_Val) AS Max_Account_Value
+FROM dbo.OctTradeFirstPlaceACCVAL;
+
+SELECT MIN(ACC_Val) AS Min_Account_Value
+FROM dbo.OctTradeFirstPlaceACCVAL;
+
+SELECT ACC_Val,
+       LAST_VALUE(ACC_Val) OVER (ORDER BY Open_Time) AS Last_Account_Value
+FROM dbo.OctTradeFirstPlaceACCVAL
+ORDER BY Open_Time DESC
+OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY;
+
+SELECT AVG(profit) AS Average_Profit
+FROM dbo.OctTradeFirstPlaceACCVAL
+WHERE profit > 0;
+
+SELECT AVG(profit) AS Average_Loss
+FROM dbo.OctTradeFirstPlaceACCVAL
+WHERE profit < 0;
+
+SELECT AVG(profit) AS Combined_Profit_Average
+FROM dbo.OctTradeFirstPlaceACCVAL;
+
+SELECT MAX(profit) AS Max_Profit
+FROM dbo.OctTradeFirstPlaceACCVAL;
+
+SELECT MIN(profit) AS Max_Loss
+FROM dbo.OctTradeFirstPlaceACCVAL;
+
+-- Queries for dbo.OCTTradesPersonalACCVAL
+
+SELECT COUNT(*) AS Row_Count
+FROM dbo.OCTTradesPersonalACCVAL;
+
+SELECT MAX(ACC_Val) AS Max_Personal_Account_Value
+FROM dbo.OCTTradesPersonalACCVAL;
+
+SELECT MIN(ACC_Val) AS Min_Personal_Account_Value
+FROM dbo.OCTTradesPersonalACCVAL;
+
+SELECT ACC_Val,
+       LAST_VALUE(ACC_Val) OVER (ORDER BY Open_Time) AS Last_Personal_Account_Value
+FROM dbo.OCTTradesPersonalACCVAL
+ORDER BY Open_Time DESC
+OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY;
+
+SELECT AVG(profit) AS Average_Profit
+FROM dbo.OCTTradesPersonalACCVAL
+WHERE profit > 0;
+
+SELECT AVG(profit) AS Average_Loss
+FROM dbo.OCTTradesPersonalACCVAL
+WHERE profit < 0;
+
+SELECT AVG(profit) AS Combined_Profit_Average
+FROM dbo.OCTTradesPersonalACCVAL;
+
+SELECT MAX(profit) AS Max_Profit
+FROM dbo.OCTTradesPersonalACCVAL;
+
+SELECT MIN(profit) AS Max_Loss
+FROM dbo.OCTTradesPersonalACCVAL;
+```
+  </details>
+
+With the statements above we can see generate generate some basic datapoints
+| Winner                  	|            	| Personal                	|           	|
+|-------------------------	|------------	|-------------------------	|-----------	|
+| Trades Taken            	| 112        	| Trades Taken            	| 78        	|
+| Max Acc Value           	| 151,392.23 	| Max Acc Value           	| 105631    	|
+| Min Acc Value           	| 101440.86  	| Min Acc Value           	| 99783     	|
+| Last Acc Value          	| 151386.81  	| Last Acc Value          	| 105205.40 	|
+| Average Profit          	| 811.49     	| Average Profit          	| 189.71    	|
+| Average Loss            	| -256.08    	| Average Loss            	| -130.02   	|
+| Combined Average Profit 	| 458.81     	| Combined Average Profit 	| 66.73     	|
+| Max Profit              	| 6720       	| Max Profit              	| 1450.19   	|
+| Max Loss                	| -2520.90   	| Max Loss                	| -507.44   	|
+| Average Volume          	| 2.35       	| Average Volume          	| 0.5225    	|
+
+Addionally I from counting the positive and negative values in the profit column we find that while I had a 63.24% winrate first place had 66.96%.
+The winner had almost 5x the volume per trade, trading more agressively compared to my trade sizing.
+The winner also never dipped below the starting amount of 100,000 gaining 1440.86 his first trade while I wasnt as lucky.
+The winner also took 34 more trades than I did.
+
+```
+SELECT Symbol, COUNT(*) AS count
+FROM dbo.OctTradeFirstPlace
+WHERE Symbol IS NOT NULL
+GROUP BY Symbol
+ORDER BY count DESC;
+
+SELECT Symbol, COUNT(*) AS count
+FROM dbo.OCTTradesPersonal
+WHERE Symbol IS NOT NULL
+GROUP BY Symbol
+ORDER BY count DESC;
+```
+From the query above we also see that while I stuck to trading just one symbol the winner traded multiple.
+| Winner  	|       	| Personal 	|       	|
+|---------	|-------	|----------	|-------	|
+| Symbol  	| count 	| Symbol   	| count 	|
+| US30x   	| 34    	| US30x    	| 78    	|
+| NAS100x 	| 19    	|          	|       	|
+| GER40x  	| 14    	|          	|       	|
+| FRA40x  	| 8     	|          	|       	|
+| UK100x  	| 7     	|          	|       	|
+| XAUUSDx 	| 7     	|          	|       	|
+| EURUSDx 	| 4     	|          	|       	|
+| GBPJPYx 	| 3     	|          	|       	|
+| CADJPYx 	| 3     	|          	|       	|
+| EURJPYx 	| 2     	|          	|       	|
+| XAGUSDx 	| 2     	|          	|       	|
+| USDJPYx 	| 1     	|          	|       	|
+| CHFJPYx 	| 1     	|          	|       	|
+| EURAUDx 	| 1     	|          	|       	|
+| AUDCADx 	| 1     	|          	|       	|
+| AUDCHFx 	| 1     	|          	|       	|
+| AUDUSDx 	| 1     	|          	|       	|
+| GBPAUDx 	| 1     	|          	|       	|
+| GBPCADx 	| 1     	|          	|       	|
+| GBPCHFx 	| 1     	|          	|       	|
