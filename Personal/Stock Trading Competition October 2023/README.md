@@ -146,7 +146,7 @@ With the statements above we can see generate generate some basic datapoints
 | Max Loss                	| -2520.90   	| Max Loss                	| -507.44   	|
 | Average Volume          	| 2.35       	| Average Volume          	| 0.5225    	|
 
-Addionally I from counting the positive and negative values in the profit column we find that while I had a 63.24% winrate first place had 66.96%.
+Addionally I from counting the positive and negative values in the profit column we find that while I had a `63.24%` winrate first place had `66.96%`.
 The winner had almost 5x the volume per trade, trading more agressively compared to my trade sizing.
 The winner also never dipped below the starting amount of 100,000 gaining 1440.86 his first trade while I wasnt as lucky.
 The winner also took 34 more trades than I did.
@@ -194,3 +194,8 @@ With Tableau we can create some quick graphics from the dataset such as a growth
 <img src="https://github.com/RJ-Jung/Projects/blob/main/Personal/Stock%20Trading%20Competition%20October%202023/Resources/Images/firstplaceaccvalgrowth.JPG" width=50% height=50%>
 
 Here we can see the winners account value curve from days he traded.
+
+***
+### Conclusions
+
+Considering my personal winrate of `63%` to the Winners `67%`, we know that the the chance of losing my first trade is `37%` losing twice in a row is `18.5%` then `9.25%` and so on, although there are multiple other varibles to consider when determing the outcome of a trade as the market changes everyday we can assume that if following a consistent entry and exit stragety. I could've definetly afforded to trade with a higher volume per day or total without risk of breaching the 10,000$ daily allowence or a 10% of the account value as a loss streak of 5 or more consecutively is well below 1% and highly unlikely.  In fact after the first day assuming we are in profit I could've even risked the entire 10,000$ daily allowence on a 63% chance and simply waitied until the next day for the allowence to reset to try again with an 18.5% chance of losing. This would still be profitable assuming we contue to gain more profit per successful trade than profit lost per unsuccessful trade. Which both the Winner as well as I were able to manage although with the winner having much more success with `811.49` per win and  `-256.08` per loss compared to my `189.71` per win and `-130.02` per loss.
