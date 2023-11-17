@@ -188,3 +188,9 @@ From the query above we also see that while I stuck to trading just one symbol t
 | GBPAUDx 	| 1     	|          	|       	|
 | GBPCADx 	| 1     	|          	|       	|
 | GBPCHFx 	| 1     	|          	|       	|
+
+With Tableau we can create some quick graphics from the dataset such as a growth curve.
+
+<img src="https://github.com/RJ-Jung/Projects/blob/main/Personal/Stock%20Trading%20Competition%20October%202023/Resources/Images/firstplaceaccvalgrowth.JPG" width=50% height=50%>
+
+Here we can see the winners account value curve from days he traded.
